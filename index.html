@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#05070e">
+<meta name="description" content="kbst07_21 — 404 メンテナンス中">
+<title>404 — メンテナンス中 | kbst07_21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@300;400;500&family=M+PLUS+1+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #05070e;
+  --bg-glow: #0a1022;
+  --ink: #dfe6f7;
+  --pastel-blue: #8fb0ff;
+  --pastel-lilac: #b9a3f5;
+  --pastel-pink: #f3a6cf;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --font-base: "M PLUS 1", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-code: "M PLUS 1 Code", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; margin: 0; }
+html { background: var(--bg); height: 100%; overflow: hidden; }
+body { font-family: var(--font-base); font-weight: 300; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "palt"; height: 100%; overflow: hidden; }
+::selection { background: rgba(143,176,255,.28); color: #fff; }
+
+/* Header: restrained Liquid Glass bar */
+.header {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 0; right: 0;
+  margin-inline: auto;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  height: 44px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 0 13px;
+  border-radius: 22px;
+  color: var(--ink);
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 12px 32px rgba(0,0,0,.38);
+}
+.dot {
+  width: 18px; height: 18px; flex: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #fff4fa 0, var(--pastel-pink) 28%, var(--pastel-lilac) 62%, var(--pastel-blue) 100%);
+  box-shadow: 0 0 12px rgba(185,163,245,.4);
+}
+.header span { font-family: var(--font-code); font-weight: 400; font-size: .84rem; letter-spacing: .06em; }
+.header { transition: border-color .4s var(--ease); animation: rise .9s var(--ease) .05s both; }
+.header:hover { border-color: rgba(255,255,255,.16); }
+.header:focus-visible, .x-link:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 3px; }
+
+/* Hero — 100vh only, no scroll */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3.5vh, 32px);
+  padding: 0 20px calc(env(safe-area-inset-bottom, 0px) + 6vh);
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 45%, var(--bg-glow) 0%, var(--bg) 70%);
+  text-align: center;
+}
+#ascii {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,.4) 0%, rgba(0,0,0,.4) 20%, #000 80%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,.4) 0%, rgba(0,0,0,.4) 20%, #000 80%);
+}
+.title {
+  position: relative;
+  font-family: var(--font-code);
+  font-weight: 400;
+  font-size: clamp(3rem, 14.5vw, 7.5rem);
+  line-height: 1.05;
+  padding-bottom: .1em;
+  margin-bottom: -.1em;
+  letter-spacing: -.03em;
+  background: linear-gradient(95deg, #9db8ff 0%, #b8a6f6 60%, #d9a8e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 40px rgba(143,176,255,.14));
+  animation: rise 1s var(--ease) .2s both;
+}
+.maintenance {
+  position: relative;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 3vw, 1.45rem);
+  letter-spacing: .18em;
+  text-indent: .18em;
+  color: rgba(223,230,247,.88);
+  animation: rise 1s var(--ease) .3s both;
+}
+.maintenance-en {
+  position: relative;
+  font-family: var(--font-code);
+  font-weight: 300;
+  font-size: .68rem;
+  letter-spacing: .32em;
+  text-indent: .32em;
+  text-transform: uppercase;
+  color: rgba(190,205,240,.5);
+  animation: rise 1s var(--ease) .35s both;
+}
+.x-link {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  color: var(--ink);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 8px 24px rgba(0,0,0,.4);
+  transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease), color .4s var(--ease);
+  animation: rise 1s var(--ease) .45s both;
+}
+.x-link:hover { background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06)); border-color: rgba(255,255,255,.2); color: #fff; transform: translateY(-2px); }
+.x-link svg { width: 17px; height: 17px; fill: currentColor; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .title, .x-link, .header, .maintenance, .maintenance-en { animation: none; } .x-link { transition: none; } }
+</style>
+</head>
+<body>
+
+<a class="header" href="#top" aria-label="kbst07_21 ホーム">
+  <i class="dot" aria-hidden="true"></i>
+  <span>kbst07_21</span>
+</a>
+
+<main>
+  <section class="hero" id="top">
+    <canvas id="ascii" aria-hidden="true"></canvas>
+    <h1 class="title">404</h1>
+    <p class="maintenance">メンテナンス中</p>
+    <p class="maintenance-en">Under Maintenance</p>
+    <a class="x-link" href="https://x.com/kbst07_21" target="_blank" rel="noopener noreferrer" aria-label="X (@kbst07_21)" title="@kbst07_21">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+  </section>
+</main>
+
+<script>
+(function () {
+  var cv = document.getElementById("ascii"), ctx = cv.getContext("2d"), hero = document.getElementById("top");
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var FONT = '300 12px "M PLUS 1 Code", ui-monospace, Menlo, monospace', LH = 15;
+  var RAMP = " ..::-=+*", COLOR = "#7f9be0";
+  var cw = 8, cols = 0, rows = 0, W = 0, H = 0;
+  var mx = 0, my = 0, tx = 0, ty = 0, str = 0, tstr = 0, seen = false, last = 0, lastNow = 0;
+
+  function layout() {
+    var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.font = FONT; ctx.textBaseline = "middle"; ctx.fillStyle = COLOR;
+    cw = ctx.measureText("M").width || 8;
+    cols = Math.ceil(W / cw) + 1; rows = Math.ceil(H / LH) + 1;
+  }
+
+  function render(now) {
+    lastNow = now;
+    var T = now * 0.00039, R = Math.max(110, Math.min(W, H) * 0.15), inv = 1 / (2 * R * R), ca = -1;
+    ctx.clearRect(0, 0, W, H);
+    for (var y = 0; y < rows; y++) {
+      var py = y * LH + LH / 2;
+      for (var x = 0; x < cols; x++) {
+        var v = (Math.sin(x * .085 + T) + Math.sin(y * .16 - T * .7) + Math.sin((x * .5 + y) * .07 + T * .5) + 3) / 6;
+        var b = 0;
+        if (str > 0.01) { var dx = x * cw + cw / 2 - mx, dy = py - my; b = str * Math.exp(-(dx * dx + dy * dy) * inv); }
+        v = Math.min(1, v + b * .28);
+        var i = Math.min(8, Math.floor(v * v * 10));
+        if (!i) continue;
+        var a = Math.round((.24 + b * .14) * 20) / 20;
+        if (a !== ca) { ca = a; ctx.globalAlpha = a; }
+        ctx.fillText(RAMP.charAt(i), x * cw, py);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(now) {
+    if (now - last > 33) {
+      last = now;
+      mx += (tx - mx) * .18; my += (ty - my) * .18;
+      str += (tstr - str) * .08;
+      render(now);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function move(e) {
+    var r = cv.getBoundingClientRect();
+    tx = e.clientX - r.left; ty = e.clientY - r.top; tstr = 1;
+    if (!seen) { mx = tx; my = ty; seen = true; }
+  }
+
+  function begin() {
+    layout();
+    if (reduce) { render(0); return; }
+    hero.addEventListener("pointermove", move);
+    hero.addEventListener("pointerdown", move);
+    hero.addEventListener("pointerleave", function () { tstr = 0; });
+    requestAnimationFrame(loop);
+  }
+
+  var rt;
+  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { layout(); render(lastNow); }, 120); });
+  var ready = document.fonts && document.fonts.load ? document.fonts.load(FONT) : Promise.resolve();
+  Promise.race([ready, new Promise(function (r) { setTimeout(r, 700); })]).then(begin, begin);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (cols) { layout(); render(lastNow); } });
+})();
+</script>
+</body>
+</html>
