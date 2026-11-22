@@ -27,7 +27,7 @@
 }
 * { box-sizing: border-box; margin: 0; }
 html { background: var(--bg); scroll-snap-type: y proximity; }
-.hero, .about { scroll-snap-align: start; scroll-snap-stop: normal; }
+.hero, .about, .links { scroll-snap-align: start; scroll-snap-stop: normal; }
 .footer { scroll-snap-align: end; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body { font-family: var(--font-base); font-weight: 300; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "palt"; }
@@ -275,6 +275,192 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .title, .socials, .header { animation: none; } .x-link { transition: none; } }
 
+
+/* JP / EN switch: a glass thumb glides between the two, like a segmented control */
+.lang-switch {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  right: 16px;
+  z-index: 60;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 12px 32px rgba(0,0,0,.38);
+}
+.lang-thumb {
+  position: absolute;
+  top: 6px; bottom: 6px; left: 6px;
+  width: 46px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.13);
+  transform: translateX(0);
+  pointer-events: none;
+}
+.lang-switch.anim .lang-thumb { transition: transform .5s cubic-bezier(.3, 1.2, .3, 1); }
+.lang-switch.is-en .lang-thumb { transform: translateX(48px); }
+.lang-opt {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-code);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-indent: .14em;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(190,205,240,.5);
+  cursor: pointer;
+  transition: color .35s var(--ease);
+}
+.lang-opt:hover { color: rgba(255,255,255,.92); }
+.lang-opt.is-active { color: #fff; }
+.lang-opt:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .lang-switch.anim .lang-thumb { transition: none; } }
+
+/* Language change: the texts themselves fade, drift and unblur */
+[data-i18n], [data-i18n-html], #gh-list { transition: opacity .19s ease, transform .19s ease, filter .19s ease; }
+body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fading #gh-list {
+  opacity: 0;
+  transform: translateY(5px);
+  filter: blur(3px);
+}
+@media (prefers-reduced-motion: reduce) { [data-i18n], [data-i18n-html], #gh-list { transition: none; } }
+
+
+/* Links: mutual links — same width and rhythm as About, almost no glass */
+.links {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 45%, var(--bg-glow) 0%, var(--bg) 70%);
+}
+.links-inner {
+  position: relative;
+  width: calc(100% - 40px);
+  margin-inline: auto;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.links-inner.in { opacity: 1; transform: none; }
+.links-label {
+  font-family: var(--font-code);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6.5vw, 4rem);
+  letter-spacing: .06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  background: linear-gradient(95deg, #9db8ff 0%, #b8a6f6 60%, #d9a8e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 32px rgba(143,176,255,.16));
+}
+.links-sub {
+  margin-top: 16px;
+  font-size: .92rem;
+  font-weight: 300;
+  letter-spacing: .3em;
+  color: rgba(190,205,240,.55);
+}
+.links-num {
+  position: absolute;
+  top: 84px; right: 5vw;
+  font-family: var(--font-code);
+  font-weight: 300;
+  font-size: clamp(3.4rem, 7vw, 5.6rem);
+  line-height: 1;
+  color: rgba(223,230,247,.05);
+  pointer-events: none;
+}
+.link-list { margin-top: 54px; display: flex; flex-direction: column; gap: 14px; }
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,.025);
+  text-decoration: none;
+  transition: border-color .35s var(--ease), background .35s var(--ease);
+}
+.link-item:hover, .link-item:focus-visible { border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.045); }
+.link-item:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 4px; }
+.link-icon {
+  width: 46px; height: 46px;
+  flex: none;
+  border-radius: 13px;
+  object-fit: cover;
+  background: rgba(255,255,255,.07);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.link-text { flex: 1; min-width: 0; }
+.link-name {
+  display: block;
+  font-family: var(--font-code);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.94);
+}
+.link-desc {
+  display: block;
+  margin-top: 5px;
+  font-size: .87rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(190,205,240,.6);
+}
+.link-arr {
+  flex: none;
+  font-size: 1rem;
+  color: rgba(190,205,240,.4);
+  transition: transform .3s var(--ease), color .3s var(--ease);
+}
+.link-item:hover .link-arr, .link-item:focus-visible .link-arr { transform: translate(2px, -2px); color: rgba(255,255,255,.9); }
+.link-open {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  border: 1px dashed rgba(255,255,255,.14);
+  border-radius: 18px;
+  text-decoration: none;
+  transition: border-color .35s var(--ease);
+}
+.link-open:hover, .link-open:focus-visible { border-color: rgba(255,255,255,.3); }
+.link-open:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 4px; }
+.link-open .link-name { color: rgba(223,230,247,.55); font-size: .95rem; }
+.link-open .link-desc { margin-top: 3px; }
+@media (min-width: 900px) {
+  .links-inner { width: min(62%, 1120px); }
+  .link-list { margin-top: 62px; }
+}
+@media (prefers-reduced-motion: reduce) { .links-inner { opacity: 1; transform: none; transition: none; } }
+
 /* Footer: dawn — from the user's own design, without the sitemap */
 .footer {
   position: relative;
@@ -426,6 +612,12 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
   <span>kbst0721</span>
 </a>
 
+<div class="lang-switch" role="group" aria-label="Language / 言語">
+  <span class="lang-thumb" aria-hidden="true"></span>
+  <button type="button" class="lang-opt is-active" data-lang="jp">JP</button>
+  <button type="button" class="lang-opt" data-lang="en">EN</button>
+</div>
+
 <main>
   <section class="hero" id="top">
     <canvas id="ascii" aria-hidden="true"></canvas>
@@ -452,14 +644,14 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
     <div class="about-num" aria-hidden="true">01</div>
     <div class="about-inner" id="about-inner">
       <div class="about-label">About</div>
-      <div class="about-sub">自己紹介</div>
+      <div class="about-sub" data-i18n="sub">自己紹介</div>
       <div class="about-grid">
         <div class="about-main">
-          <p class="about-lead"><strong>15歳Apple・Swift信者</strong></p>
-          <p>こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。</p>
-          <p>JavascriptよりSwiftの方がわかってる同志と出会ったことは過去一度もない気がする。<br>
+          <p class="about-lead"><strong data-i18n="lead">15歳Apple・Swift信者</strong></p>
+          <p data-i18n="p1">こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。</p>
+          <p data-i18n-html="p2">JavascriptよりSwiftの方がわかってる同志と出会ったことは過去一度もない気がする。<br>
           スマホはiPhone 17を使用している。野球観戦や草野球が趣味で、好きな球団はヤクルトとカープ。</p>
-          <p>基本的にMac向けのアプリとかTUIとかぐらいしか作ってないですけど、たまにWeb言語で遊んだりする。<br>
+          <p data-i18n-html="p3">基本的にMac向けのアプリとかTUIとかぐらいしか作ってないですけど、たまにWeb言語で遊んだりする。<br>
           どうぞよろしく。</p>
         </div>
         <aside class="about-gh" aria-label="GitHub">
@@ -473,6 +665,30 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
             GitHub / kbst0721 &#8599;
           </a>
         </aside>
+      </div>
+    </div>
+  </section>
+  <section class="links" id="links">
+    <div class="links-num" aria-hidden="true">02</div>
+    <div class="links-inner" id="links-inner">
+      <div class="links-label">Links</div>
+      <div class="links-sub" data-i18n="linksSub">相互リンク</div>
+      <div class="link-list">
+        <a class="link-item" href="https://wsn0672.jp" target="_blank" rel="noopener noreferrer">
+          <img class="link-icon" src="https://wsn0672.jp/favicon.png" alt="" width="46" height="46" loading="lazy" onerror="this.style.display='none'">
+          <span class="link-text">
+            <span class="link-name">wsn0672.jp</span>
+            <span class="link-desc" data-i18n="linkDesc1">中学生の趣味程度の自宅鯖</span>
+          </span>
+          <span class="link-arr" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link-open" href="https://x.com/kbst0721" target="_blank" rel="noopener noreferrer">
+          <span class="link-text">
+            <span class="link-name" data-i18n="linkOpen">相互リンク募集中</span>
+            <span class="link-desc" data-i18n="linkOpenDesc">XのDMで声をかけてください。</span>
+          </span>
+          <span class="link-arr" aria-hidden="true">&#8599;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -662,43 +878,136 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
 })();
 </script>
 <script>
-/* GitHub: real-time, latest 3 own repositories of kbst0721. */
+/* Links: fade in on scroll, like About. */
+(function () {
+  var inner = document.getElementById("links-inner");
+  if (!inner) return;
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { inner.classList.add("in"); io.disconnect(); } });
+    }, { threshold: 0.05 });
+    io.observe(inner);
+  } else inner.classList.add("in");
+})();
+</script>
+<script>
+/* JP / EN switch: swaps every labelled text, remembers the choice. */
+(function () {
+  var T = {
+    jp: {
+      linksSub: "相互リンク",
+      linkDesc1: "中学生の趣味程度の自宅鯖",
+      linkOpen: "相互リンク募集中",
+      linkOpenDesc: "XのDMで声をかけてください。",
+      sub: "自己紹介",
+      lead: "15歳Apple・Swift信者",
+      p1: "こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。",
+      p2: "JavascriptよりSwiftの方がわかってる同志と出会ったことは過去一度もない気がする。<br>スマホはiPhone 17を使用している。野球観戦や草野球が趣味で、好きな球団はヤクルトとカープ。",
+      p3: "基本的にMac向けのアプリとかTUIとかぐらいしか作ってないですけど、たまにWeb言語で遊んだりする。<br>どうぞよろしく。"
+    },
+    en: {
+      linksSub: "Mutual links",
+      linkDesc1: "A middle schooler's home server, run just as a hobby.",
+      linkOpen: "Open to mutual links",
+      linkOpenDesc: "DM me on X.",
+      sub: "Introduction",
+      lead: "15 years old — Apple & Swift devotee",
+      p1: "Hi there. I'm kbst0721, a 15-year-old middle school student in Tokyo, tinkering with a school-issued MacBook Air M2 (2022).",
+      p2: "I don't think I've ever met anyone who gets Swift better than JavaScript, like I do.<br>My phone is an iPhone 17. I love watching baseball and playing casual baseball — my teams are the Yakult Swallows and the Hiroshima Carp.",
+      p3: "I mostly build Mac apps and TUIs, and sometimes play around with web languages.<br>Thanks for stopping by."
+    }
+  };
+  var cur = "jp";
+  try { cur = localStorage.getItem("kbst0721.lang") === "en" ? "en" : "jp"; } catch (e) {}
+  var first = true, fadeTimer = null;
+  function swapTexts(l) {
+    window.__lang = l;
+    document.documentElement.lang = l === "jp" ? "ja" : "en";
+    var d = T[l];
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (d[k] != null) el.textContent = d[k];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-html");
+      if (d[k] != null) el.innerHTML = d[k];
+    });
+    window.dispatchEvent(new CustomEvent("langchange", { detail: { lang: l } }));
+  }
+  function apply(l) {
+    cur = l;
+    document.querySelectorAll(".lang-opt").forEach(function (b) {
+      b.classList.toggle("is-active", b.getAttribute("data-lang") === l);
+    });
+    var sw = document.querySelector(".lang-switch");
+    if (sw) {
+      sw.classList.toggle("is-en", l === "en");
+      if (!sw.classList.contains("anim")) requestAnimationFrame(function () { sw.classList.add("anim"); });
+    }
+    try { localStorage.setItem("kbst0721.lang", l); } catch (e) {}
+    if (first) { first = false; swapTexts(l); return; }
+    document.body.classList.add("lang-fading");
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(function () {
+      swapTexts(l);
+      document.body.classList.remove("lang-fading");
+    }, 190);
+  }
+  document.querySelectorAll(".lang-opt").forEach(function (b) {
+    b.addEventListener("click", function () { apply(b.getAttribute("data-lang")); });
+  });
+  window.__setLang = apply;
+  apply(cur);
+})();
+</script>
+
+<script>
+/* GitHub: real-time, latest 3 own repositories of kbst0721. Notes follow the JP/EN switch. */
 (function () {
   var list = document.getElementById("gh-list");
-  if (!list || !window.fetch) return;
+  if (!list) return;
+  var NOTES = {
+    jp: { empty: "まだ公開リポジトリがありません。", error: "GitHubを取得できませんでした。", loading: "Loading…" },
+    en: { empty: "No public repositories yet.", error: "Couldn't load GitHub.", loading: "Loading…" }
+  };
+  var state = { repos: null, failed: false };
+  function lang() { return window.__lang === "en" ? "en" : "jp"; }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text != null) e.textContent = text;
     return e;
   }
+  function render() {
+    var n = NOTES[lang()];
+    list.textContent = "";
+    if (state.failed) { list.appendChild(el("div", "repo-note", n.error)); return; }
+    if (!state.repos) { list.appendChild(el("div", "repo-note", n.loading)); return; }
+    if (!state.repos.length) { list.appendChild(el("div", "repo-note", n.empty)); return; }
+    state.repos.forEach(function (repo) {
+      var wrap = el("div", "repo");
+      var a = el("a");
+      a.href = repo.html_url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.appendChild(el("div", "repo-name", repo.name));
+      if (repo.description) a.appendChild(el("div", "repo-desc", repo.description));
+      var meta = [];
+      if (repo.language) meta.push(repo.language);
+      meta.push("★ " + (repo.stargazers_count || 0));
+      a.appendChild(el("div", "repo-meta", meta.join("  ·  ")));
+      wrap.appendChild(a);
+      list.appendChild(wrap);
+    });
+  }
+  window.addEventListener("langchange", render);
+  if (!window.fetch) { state.failed = true; render(); return; }
   fetch("https://api.github.com/users/kbst0721/repos?sort=updated&direction=desc&per_page=100", { headers: { "Accept": "application/vnd.github+json" } })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (repos) {
-      var own = (repos || []).filter(function (x) { return !x.fork && !x.archived; }).slice(0, 3);
-      list.textContent = "";
-      if (!own.length) {
-        list.appendChild(el("div", "repo-note", "まだ公開リポジトリがありません。"));
-        return;
-      }
-      own.forEach(function (repo) {
-        var wrap = el("div", "repo");
-        var a = el("a");
-        a.href = repo.html_url; a.target = "_blank"; a.rel = "noopener noreferrer";
-        a.appendChild(el("div", "repo-name", repo.name));
-        if (repo.description) a.appendChild(el("div", "repo-desc", repo.description));
-        var meta = [];
-        if (repo.language) meta.push(repo.language);
-        meta.push("\u2605 " + (repo.stargazers_count || 0));
-        a.appendChild(el("div", "repo-meta", meta.join("  \u00B7  ")));
-        wrap.appendChild(a);
-        list.appendChild(wrap);
-      });
+      state.repos = (repos || []).filter(function (x) { return !x.fork && !x.archived; }).slice(0, 3);
+      render();
     })
-    .catch(function () {
-      list.textContent = "";
-      list.appendChild(el("div", "repo-note", "GitHubを取得できませんでした。"));
-    });
+    .catch(function () { state.failed = true; render(); });
+  render();
 })();
 </script>
 <script>
