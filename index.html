@@ -356,6 +356,13 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
   overflow: hidden;
   background: radial-gradient(ellipse 80% 60% at 50% 45%, var(--bg-glow) 0%, var(--bg) 70%);
 }
+#ascii-links {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,.55) 74%, rgba(0,0,0,.16) 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,.55) 74%, rgba(0,0,0,.16) 88%, transparent 100%);
+}
 .links-inner {
   position: relative;
   width: calc(100% - 40px);
@@ -648,7 +655,7 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
       <div class="about-grid">
         <div class="about-main">
           <p class="about-lead"><strong data-i18n="lead">15歳Apple・Swift信者</strong></p>
-          <p data-i18n="p1">こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。</p>
+          <p data-i18n="p1">こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。小学生のときまっしろとかいうコミュニティにいた。</p>
           <p data-i18n-html="p2">JavascriptよりSwiftの方がわかってる同志と出会ったことは過去一度もない気がする。<br>
           スマホはiPhone 17を使用している。野球観戦や草野球が趣味で、好きな球団はヤクルトとカープ。</p>
           <p data-i18n-html="p3">基本的にMac向けのアプリとかTUIとかぐらいしか作ってないですけど、たまにWeb言語で遊んだりする。<br>
@@ -669,6 +676,7 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
     </div>
   </section>
   <section class="links" id="links">
+    <canvas id="ascii-links" aria-hidden="true"></canvas>
     <div class="links-num" aria-hidden="true">02</div>
     <div class="links-inner" id="links-inner">
       <div class="links-label">Links</div>
@@ -878,6 +886,86 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
 })();
 </script>
 <script>
+/* Links background — the same ASCII and mouse glow as About,
+ * masked so it falls away steeply but naturally toward the footer. */
+(function () {
+  var cv = document.getElementById("ascii-links"), ctx = cv.getContext("2d"), section = document.getElementById("links");
+  if (!cv || !section) return;
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var FONT = '300 12px "M PLUS 1 Code", ui-monospace, Menlo, monospace', LH = 15;
+  var RAMP = " ..::-=+*", COLOR = "#7f9be0";
+  var cw = 8, cols = 0, rows = 0, W = 0, H = 0;
+  var mx = 0, my = 0, tx = 0, ty = 0, str = 0, tstr = 0, seen = false, last = 0, lastNow = 0;
+  var running = false, raf = 0;
+
+  function layout() {
+    var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.font = FONT; ctx.textBaseline = "middle"; ctx.fillStyle = COLOR;
+    cw = ctx.measureText("M").width || 8;
+    cols = Math.ceil(W / cw) + 1; rows = Math.ceil(H / LH) + 1;
+  }
+
+  function render(now) {
+    lastNow = now;
+    var T = now * 0.00031, R = Math.max(110, Math.min(W, H) * 0.14), inv = 1 / (2 * R * R), ca = -1;
+    ctx.clearRect(0, 0, W, H);
+    for (var y = 0; y < rows; y++) {
+      var py = y * LH + LH / 2;
+      for (var x = 0; x < cols; x++) {
+        var v = (Math.sin(x * .075 + T) + Math.sin(y * .15 - T * .7) + Math.sin((x * .5 + y) * .065 + T * .5) + 3) / 6;
+        var b = 0;
+        if (str > 0.01) { var dx = x * cw + cw / 2 - mx, dy = py - my; b = str * Math.exp(-(dx * dx + dy * dy) * inv); }
+        v = Math.min(1, v + b * .26);
+        var i = Math.min(8, Math.floor(v * v * 10));
+        if (!i) continue;
+        var a = Math.round((.21 + b * .14) * 20) / 20;
+        if (a !== ca) { ca = a; ctx.globalAlpha = a; }
+        ctx.fillText(RAMP.charAt(i), x * cw, py);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(now) {
+    if (!running) return;
+    if (now - last > 33) {
+      last = now;
+      mx += (tx - mx) * .18; my += (ty - my) * .18;
+      str += (tstr - str) * .08;
+      render(now);
+    }
+    raf = requestAnimationFrame(loop);
+  }
+  function start() { if (running || reduce) return; running = true; raf = requestAnimationFrame(loop); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
+  function move(e) {
+    var r = cv.getBoundingClientRect();
+    tx = e.clientX - r.left; ty = e.clientY - r.top; tstr = 1;
+    if (!seen) { mx = tx; my = ty; seen = true; }
+  }
+  if (reduce) { layout(); render(0); }
+  else {
+    section.addEventListener("pointermove", move);
+    section.addEventListener("pointerdown", move);
+    section.addEventListener("pointerleave", function () { tstr = 0; });
+  }
+  var rt;
+  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { layout(); render(lastNow); }, 120); });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
+    }, { threshold: 0.05 });
+    io.observe(section);
+  } else start();
+  var ready = document.fonts && document.fonts.load ? document.fonts.load(FONT) : Promise.resolve();
+  Promise.race([ready, new Promise(function (r) { setTimeout(r, 700); })]).then(function () { layout(); render(lastNow); }, function () { layout(); render(lastNow); });
+})();
+</script>
+<script>
 /* Links: fade in on scroll, like About. */
 (function () {
   var inner = document.getElementById("links-inner");
@@ -901,7 +989,7 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
       linkOpenDesc: "応募はXのDMまで。",
       sub: "自己紹介",
       lead: "15歳Apple・Swift信者",
-      p1: "こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。",
+      p1: "こんにちわ。kbst0721は東京都内で学校支給のMacbook Air M2 (2022)をいじくり回している15歳男子中学生です。小学生のときまっしろとかいうコミュニティにいた。",
       p2: "JavascriptよりSwiftの方がわかってる同志と出会ったことは過去一度もない気がする。<br>スマホはiPhone 17を使用している。野球観戦や草野球が趣味で、好きな球団はヤクルトとカープ。",
       p3: "基本的にMac向けのアプリとかTUIとかぐらいしか作ってないですけど、たまにWeb言語で遊んだりする。<br>どうぞよろしく。"
     },
@@ -912,7 +1000,7 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
       linkOpenDesc: "Apply via DM on X.",
       sub: "Introduction",
       lead: "15 years old — Apple & Swift devotee",
-      p1: "Hi there. I'm kbst0721, a 15-year-old middle school student in Tokyo, tinkering with a school-issued MacBook Air M2 (2022).",
+      p1: "Hi there. I'm kbst0721, a 15-year-old middle school student in Tokyo, tinkering with a school-issued MacBook Air M2 (2022). Back in elementary school, I was part of a community called Masshiro.",
       p2: "I don't think I've ever met anyone who gets Swift better than JavaScript, like I do.<br>My phone is an iPhone 17. I love watching baseball and playing casual baseball — my teams are the Yakult Swallows and the Hiroshima Carp.",
       p3: "I mostly build Mac apps and TUIs, and sometimes play around with web languages.<br>Thanks for stopping by."
     }
