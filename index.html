@@ -53,8 +53,9 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
 .header {
   position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + 16px);
-  left: 0; right: 0;
-  margin-inline: auto;
+  left: 50%; right: auto;
+  margin: 0;
+  transform: translateX(-50%);
   width: fit-content;
   max-width: calc(100% - 24px);
   height: 44px;
@@ -81,7 +82,8 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
   display: block;
 }
 .header span { font-family: var(--font-code); font-weight: 400; font-size: .84rem; letter-spacing: .06em; }
-.header { transition: border-color .4s var(--ease); animation: rise .9s var(--ease) .05s both; }
+.topbar { display: contents; }
+.header { transition: border-color .5s var(--ease), background .5s var(--ease), box-shadow .5s var(--ease), transform .65s cubic-bezier(.3, 1.15, .3, 1), border-radius .65s cubic-bezier(.3, 1.15, .3, 1); animation: rise-h .9s var(--ease) .05s both; }
 .header:hover { border-color: rgba(255,255,255,.16); }
 .header:focus-visible, .x-link:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 3px; }
 
@@ -289,6 +291,7 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
 }
 @media (prefers-reduced-motion: reduce) { .scroll { animation: none; } .scroll i::after { display: none; } }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes rise-h { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .title, .socials, .header { animation: none; } .x-link { transition: none; } }
 
 
@@ -296,8 +299,10 @@ body { font-family: var(--font-base); font-weight: 300; color: var(--ink); backg
 .lang-switch {
   position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + 16px);
-  right: 16px;
+  left: 50%; right: auto;
+  transform: translateX(calc(50vw - 122px));
   z-index: 60;
+  transition: background .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease), transform .65s cubic-bezier(.3, 1.15, .3, 1), border-radius .65s cubic-bezier(.3, 1.15, .3, 1);
   height: 44px;
   display: flex;
   align-items: center;
@@ -626,10 +631,36 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
   .footer-mail { font-size: .78rem; }
   .footer-copy { font-size: .64rem; letter-spacing: .16em; }
 }
+
+/* Small screens: the language switch docks into the header bar, and About
+ * drops its GitHub column so the text fits one screen. */
+@media (max-width: 640px) {
+  .header {
+    transform: translateX(calc(-100% + 16px));
+    animation: none;
+    border-radius: 22px 0 0 22px;
+    border-right-color: transparent;
+    box-shadow: none;
+  }
+  .lang-switch {
+    transform: translateX(15px);
+    border-radius: 0 22px 22px 0;
+    border-left-color: transparent;
+    box-shadow: none;
+  }
+  .about { padding: 84px 0 36px; }
+  .about-label { font-size: 2.1rem; }
+  .about-sub { margin-top: 10px; }
+  .about-grid { margin-top: 32px; }
+  .about-gh { display: none; }
+  .about-main p { margin-top: 20px; font-size: .94rem; line-height: 1.95; }
+  .about-num { top: 76px; }
+}
 </style>
 </head>
 <body>
 
+<div class="topbar">
 <a class="header" href="#top" aria-label="kbst0721 ホーム">
   <img class="icon" src="images/icon.png" alt="" aria-hidden="true">
   <span>kbst0721</span>
@@ -639,6 +670,7 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
   <span class="lang-thumb" aria-hidden="true"></span>
   <button type="button" class="lang-opt is-active" data-lang="jp">JP</button>
   <button type="button" class="lang-opt" data-lang="en">EN</button>
+</div>
 </div>
 
 <main>
