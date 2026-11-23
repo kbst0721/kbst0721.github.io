@@ -43,7 +43,7 @@
 }
 * { box-sizing: border-box; margin: 0; }
 html { background: var(--bg); scroll-snap-type: y proximity; }
-.hero, .about, .links { scroll-snap-align: start; scroll-snap-stop: normal; }
+.hero, .about, .releases, .links { scroll-snap-align: start; scroll-snap-stop: normal; }
 .footer { scroll-snap-align: end; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body { font-family: var(--font-base); font-weight: 300; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "palt"; }
@@ -489,6 +489,149 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
 }
 @media (prefers-reduced-motion: reduce) { .links-inner { opacity: 1; transform: none; transition: none; } }
 
+
+/* Releases — same title style as Links, calm flat cards in a row on PC */
+.releases {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 45%, var(--bg-glow) 0%, var(--bg) 70%);
+}
+.releases-inner {
+  position: relative;
+  width: calc(100% - 40px);
+  margin-inline: auto;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.releases-inner.in { opacity: 1; transform: none; }
+.releases-label {
+  font-family: var(--font-code);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6.5vw, 4rem);
+  letter-spacing: .06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  background: linear-gradient(95deg, #9db8ff 0%, #b8a6f6 60%, #d9a8e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 32px rgba(143,176,255,.16));
+}
+.releases-sub {
+  margin-top: 16px;
+  font-size: .92rem;
+  font-weight: 300;
+  letter-spacing: .3em;
+  color: rgba(190,205,240,.55);
+}
+.releases-num {
+  position: absolute;
+  top: 84px; right: 5vw;
+  font-family: var(--font-code);
+  font-weight: 300;
+  font-size: clamp(3.4rem, 7vw, 5.6rem);
+  line-height: 1;
+  color: rgba(223,230,247,.05);
+  pointer-events: none;
+}
+.releases-note {
+  margin-top: 18px;
+  font-size: .82rem;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(190,205,240,.5);
+  max-width: 36em;
+}
+.releases-note code {
+  font-family: var(--font-code);
+  font-size: .92em;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.06);
+}
+.rel-row { margin-top: 54px; display: flex; gap: 14px; }
+.rel-card {
+  flex: 1 1 0;
+  min-width: 0;
+  display: block;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,.025);
+  text-decoration: none;
+  transition: border-color .35s var(--ease), background .35s var(--ease);
+}
+a.rel-card:hover, a.rel-card:focus-visible { border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.045); }
+a.rel-card:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 4px; }
+.rel-top { display: flex; align-items: center; gap: 10px; }
+.rel-name {
+  font-family: var(--font-code);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.94);
+  overflow-wrap: anywhere;
+}
+.rel-ver {
+  flex: none;
+  font-family: var(--font-code);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: rgba(223,230,247,.85);
+  background: rgba(255,255,255,.07);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.09);
+}
+.rel-date {
+  margin-top: 10px;
+  font-family: var(--font-code);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  color: rgba(190,205,240,.45);
+}
+.rel-desc {
+  margin-top: 10px;
+  font-size: .87rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(190,205,240,.62);
+}
+.rel-note { font-size: .9rem; font-weight: 300; color: rgba(190,205,240,.55); }
+.rel-more {
+  margin-top: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-code);
+  font-size: .74rem;
+  letter-spacing: .16em;
+  color: rgba(190,205,240,.65);
+  text-decoration: none;
+  transition: color .3s var(--ease);
+}
+.rel-more:hover { color: #fff; }
+.rel-more:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 3px; }
+@media (min-width: 900px) {
+  .releases-inner { width: min(62%, 1120px); }
+  .rel-row { margin-top: 62px; }
+}
+@media (max-width: 640px) {
+  .rel-row { flex-direction: column; }
+  .releases { padding: 84px 0 36px; }
+  .releases-label { font-size: 2.1rem; }
+  .releases-sub { margin-top: 10px; }
+  .releases-num { top: 76px; }
+}
+@media (prefers-reduced-motion: reduce) { .releases-inner { opacity: 1; transform: none; transition: none; } }
+
 /* Footer: dawn — from the user's own design, without the sitemap */
 .footer {
   position: relative;
@@ -723,9 +866,20 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
       </div>
     </div>
   </section>
+  <section class="releases" id="releases">
+    <div class="releases-num" aria-hidden="true">02</div>
+    <div class="releases-inner" id="releases-inner">
+      <div class="releases-label">Releases</div>
+      <div class="releases-sub" data-i18n="releasesSub">リリース</div>
+      <p class="releases-note" data-i18n-html="releasesNote">僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします</p>
+      <div class="rel-row" id="rel-row"><p class="rel-note">Loading…</p></div>
+      <a class="rel-more" href="releases.html"><span data-i18n="releasesMore">すべてのリリース</span> &#8599;</a>
+    </div>
+  </section>
+
   <section class="links" id="links">
     <canvas id="ascii-links" aria-hidden="true"></canvas>
-    <div class="links-num" aria-hidden="true">02</div>
+    <div class="links-num" aria-hidden="true">03</div>
     <div class="links-inner" id="links-inner">
       <div class="links-label">Links</div>
       <div class="links-sub" data-i18n="linksSub">相互リンク</div>
@@ -1035,11 +1189,74 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
 })();
 </script>
 <script>
+/* Releases: fade in on scroll, like Links. */
+(function () {
+  var inner = document.getElementById("releases-inner");
+  if (!inner) return;
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { inner.classList.add("in"); io.disconnect(); } });
+    }, { threshold: 0.05 });
+    io.observe(inner);
+  } else inner.classList.add("in");
+})();
+</script>
+<script>
+/* Releases: latest 3 from releases.json. Notes follow the JP/EN switch. */
+(function () {
+  var row = document.getElementById("rel-row");
+  if (!row || !window.fetch) return;
+  var NOTES = {
+    jp: { empty: "まだリリースがありません。", error: "リリースを取得できませんでした。", loading: "Loading…" },
+    en: { empty: "No releases yet.", error: "Couldn't load releases.", loading: "Loading…" }
+  };
+  var items = null, failed = false;
+  function lang() { return window.__lang === "en" ? "en" : "jp"; }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function render() {
+    var n = NOTES[lang()];
+    row.textContent = "";
+    if (failed) { row.appendChild(el("p", "rel-note", n.error)); return; }
+    if (!items) { row.appendChild(el("p", "rel-note", n.loading)); return; }
+    if (!items.length) { row.appendChild(el("p", "rel-note", n.empty)); return; }
+    items.slice(0, 3).forEach(function (r) {
+      var card = el(r.url ? "a" : "div", "rel-card");
+      if (r.url) { card.href = r.url; card.target = "_blank"; card.rel = "noopener noreferrer"; if (/\.dmg($|\?)/i.test(r.url)) card.setAttribute("download", ""); }
+      var top = el("div", "rel-top");
+      top.appendChild(el("span", "rel-name", r.name || ""));
+      if (r.version) top.appendChild(el("span", "rel-ver", /^v/i.test(r.version) ? r.version : "v" + r.version));
+      card.appendChild(top);
+      if (r.date) card.appendChild(el("div", "rel-date", r.date));
+      var d = lang() === "en" && r.descriptionEn ? r.descriptionEn : r.description;
+      if (d) card.appendChild(el("p", "rel-desc", d));
+      row.appendChild(card);
+    });
+  }
+  window.addEventListener("langchange", render);
+  render();
+  fetch("releases.json", { cache: "no-store" })
+    .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
+    .then(function (data) {
+      items = (data || []).slice().sort(function (a, b) { return (b.date || "") < (a.date || "") ? -1 : 1; });
+      render();
+    })
+    .catch(function () { failed = true; render(); });
+})();
+</script>
+<script>
 /* JP / EN switch: swaps every labelled text, remembers the choice. */
 (function () {
   var T = {
     jp: {
       linksSub: "相互リンク",
+      releasesSub: "リリース",
+      releasesNote: "僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします",
+      releasesMore: "すべてのリリース",
       linkDesc1: "中学生の趣味程度の自宅鯖",
       linkDesc2: "AIを使って色々開発などをしているKimSeekをつくった人です。",
       linkOpen: "相互リンク募集中",
@@ -1052,6 +1269,9 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
     },
     en: {
       linksSub: "Mutual links",
+      releasesSub: "Latest releases",
+      releasesNote: "I don't have a paid Apple Developer account, so my apps aren't signed.<br>Please run <code>xattr -dr</code> first.",
+      releasesMore: "All releases",
       linkDesc1: "A middle schooler's home server, run just as a hobby.",
       linkDesc2: "The creator of KimSeek, developing all sorts of things with AI.",
       linkOpen: "Open to mutual links",
