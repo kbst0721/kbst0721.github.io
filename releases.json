@@ -1,0 +1,18 @@
+[
+  {
+    "date": "2026-11-22",
+    "description": "ポートフォリオサイトを公開。",
+    "descriptionEn": "Portfolio site launched.",
+    "name": "kbst0721.github.io",
+    "url": "https://kbst0721.github.io/",
+    "version": "1.0"
+  },
+  {
+    "name": "Wasabi",
+    "version": "0.1.0",
+    "date": "2026-11-23",
+    "description": "Kekaのdmg特化版です。初期リリース。",
+    "descriptionEn": "A DMG-focused take on Keka. Initial release.",
+    "url": "downloads/Wasabi-v0.1.0.dmg"
+  }
+]
