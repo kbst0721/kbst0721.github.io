@@ -871,7 +871,7 @@ a.rel-card:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset
     <div class="releases-inner" id="releases-inner">
       <div class="releases-label">Releases</div>
       <div class="releases-sub" data-i18n="releasesSub">リリース</div>
-      <p class="releases-note" data-i18n-html="releasesNote">僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします</p>
+      <p class="releases-note" data-i18n-html="releasesNote">僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code>をお願いします</p>
       <div class="rel-row" id="rel-row"><p class="rel-note">Loading…</p></div>
       <a class="rel-more" href="releases.html"><span data-i18n="releasesMore">すべてのリリース</span> &#8599;</a>
     </div>
@@ -1255,7 +1255,7 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
     jp: {
       linksSub: "相互リンク",
       releasesSub: "リリース",
-      releasesNote: "僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします",
+      releasesNote: "僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code>をお願いします",
       releasesMore: "すべてのリリース",
       linkDesc1: "中学生の趣味程度の自宅鯖",
       linkDesc2: "AIを使って色々開発などをしているKimSeekをつくった人です。",
@@ -1270,7 +1270,7 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
     en: {
       linksSub: "Mutual links",
       releasesSub: "Latest releases",
-      releasesNote: "I don't have a paid Apple Developer account, so my apps aren't signed.<br>Please run <code>xattr -dr</code> first.",
+      releasesNote: "I don't have a paid Apple Developer account, so my apps aren't signed.<br>Please run <code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code> first.",
       releasesMore: "All releases",
       linkDesc1: "A middle schooler's home server, run just as a hobby.",
       linkDesc2: "The creator of KimSeek, developing all sorts of things with AI.",

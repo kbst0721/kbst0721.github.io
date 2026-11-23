@@ -543,7 +543,7 @@ html { scroll-snap-type: none; }
   <div class="relpage-inner">
     <div class="releases-label">Releases</div>
     <div class="releases-sub" data-i18n="releasesSub">リリース</div>
-    <p class="releases-note" data-i18n-html="releasesNote">僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします</p>
+    <p class="releases-note" data-i18n-html="releasesNote">僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code>をお願いします</p>
     <div class="rel-grid" id="rel-grid"><p class="rel-note">Loading…</p></div>
   </div>
 </main>
@@ -573,8 +573,8 @@ html { scroll-snap-type: none; }
 /* JP / EN switch (releases page): back label + subtitle. Same behaviour as the top page. */
 (function () {
   var T = {
-    jp: { back: "戻る", releasesSub: "リリース", releasesNote: "僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr</code>をお願いします" },
-    en: { back: "Back", releasesSub: "Latest releases", releasesNote: "I don't have a paid Apple Developer account, so my apps aren't signed.<br>Please run <code>xattr -dr</code> first." }
+    jp: { back: "戻る", releasesSub: "リリース", releasesNote: "僕はApple Developerの有料アカウントに入っていないので署名をしていません。<br><code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code>をお願いします" },
+    en: { back: "Back", releasesSub: "Latest releases", releasesNote: "I don't have a paid Apple Developer account, so my apps aren't signed.<br>Please run <code>xattr -dr com.apple.quarantine /Applications/Wasabi.app</code> first." }
   };
   var cur = "jp";
   try { cur = localStorage.getItem("kbst0721.lang") === "en" ? "en" : "jp"; } catch (e) {}
