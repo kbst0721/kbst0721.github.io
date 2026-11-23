@@ -43,7 +43,7 @@
 }
 * { box-sizing: border-box; margin: 0; }
 html { background: var(--bg); scroll-snap-type: y proximity; }
-.hero, .about, .links { scroll-snap-align: start; scroll-snap-stop: normal; }
+.hero, .about, .apps, .links { scroll-snap-align: start; scroll-snap-stop: normal; }
 .footer { scroll-snap-align: end; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body { font-family: var(--font-base); font-weight: 300; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "palt"; }
@@ -490,6 +490,127 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
 @media (prefers-reduced-motion: reduce) { .links-inner { opacity: 1; transform: none; transition: none; } }
 
 
+/* Apps: a quiet ruled list; Liquid Glass only on the Open button */
+.apps {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 45%, var(--bg-glow) 0%, var(--bg) 70%);
+}
+#ascii-apps {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,.4) 0%, rgba(0,0,0,.4) 20%, #000 80%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,.4) 0%, rgba(0,0,0,.4) 20%, #000 80%);
+}
+.apps-inner {
+  position: relative;
+  width: calc(100% - 40px);
+  margin-inline: auto;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.apps-inner.in { opacity: 1; transform: none; }
+.apps-label {
+  font-family: var(--font-code);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6.5vw, 4rem);
+  letter-spacing: .06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  background: linear-gradient(95deg, #9db8ff 0%, #b8a6f6 60%, #d9a8e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 32px rgba(143,176,255,.16));
+}
+.apps-sub {
+  margin-top: 16px;
+  font-size: .92rem;
+  font-weight: 300;
+  letter-spacing: .3em;
+  color: rgba(190,205,240,.55);
+}
+.apps-num {
+  position: absolute;
+  top: 84px; right: 5vw;
+  font-family: var(--font-code);
+  font-weight: 300;
+  font-size: clamp(3.4rem, 7vw, 5.6rem);
+  line-height: 1;
+  color: rgba(223,230,247,.05);
+  pointer-events: none;
+}
+.app-list { margin-top: 54px; border-top: 1px solid rgba(255,255,255,.13); }
+.app-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 27px 2px;
+  border-bottom: 1px solid rgba(255,255,255,.13);
+}
+.app-text { flex: 1; min-width: 0; }
+.app-name {
+  font-family: var(--font-code);
+  font-size: 1.12rem;
+  font-weight: 400;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.95);
+}
+.app-ver {
+  margin-left: 11px;
+  font-family: var(--font-code);
+  font-size: .7rem;
+  letter-spacing: .14em;
+  color: rgba(190,205,240,.45);
+}
+.app-desc {
+  margin-top: 8px;
+  font-size: .88rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(190,205,240,.62);
+  max-width: 36em;
+}
+.app-open {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  font-size: .86rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 12px 32px rgba(0,0,0,.38);
+  transition: border-color .35s var(--ease);
+}
+.app-open:hover { border-color: rgba(255,255,255,.16); }
+.app-open:focus-visible { outline: 2px solid var(--pastel-blue); outline-offset: 3px; }
+.app-note { padding: 24px 0; font-size: .86rem; font-weight: 300; color: rgba(190,205,240,.55); border-bottom: 1px solid rgba(255,255,255,.13); }
+@media (min-width: 900px) {
+  .apps-inner { width: min(62%, 1120px); }
+  .app-list { margin-top: 62px; }
+}
+@media (prefers-reduced-motion: reduce) { .apps-inner { opacity: 1; transform: none; transition: none; } }
+
+
 /* Footer: dawn — from the user's own design, without the sitemap */
 .footer {
   position: relative;
@@ -656,6 +777,12 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
   .about-gh { display: none; }
   .about-main p { margin-top: 20px; font-size: .94rem; line-height: 1.95; }
   .about-num { top: 76px; }
+  .apps { padding: 84px 0 60px; }
+  .apps-label { font-size: 2.1rem; }
+  .apps-sub { margin-top: 10px; }
+  .apps-num { top: 76px; }
+  .app-list { margin-top: 36px; }
+  .app-row { padding: 22px 0; gap: 16px; }
 }
 </style>
 </head>
@@ -724,9 +851,19 @@ body.lang-fading [data-i18n], body.lang-fading [data-i18n-html], body.lang-fadin
       </div>
     </div>
   </section>
+  <section class="apps" id="apps">
+    <canvas id="ascii-apps" aria-hidden="true"></canvas>
+    <div class="apps-num" aria-hidden="true">02</div>
+    <div class="apps-inner" id="apps-inner">
+      <div class="apps-label">Apps</div>
+      <div class="apps-sub" data-i18n="appsSub">アプリ</div>
+      <div class="app-list" id="app-list"></div>
+    </div>
+  </section>
+
   <section class="links" id="links">
     <canvas id="ascii-links" aria-hidden="true"></canvas>
-    <div class="links-num" aria-hidden="true">02</div>
+    <div class="links-num" aria-hidden="true">03</div>
     <div class="links-inner" id="links-inner">
       <div class="links-label">Links</div>
       <div class="links-sub" data-i18n="linksSub">相互リンク</div>
@@ -951,6 +1088,138 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
 })();
 </script>
 <script>
+/* Apps background — the same ASCII field and mouse glow as About.
+ * It only animates while the section is on screen. */
+(function () {
+  var cv = document.getElementById("ascii-apps"), ctx = cv.getContext("2d"), section = document.getElementById("apps");
+  var inner = document.getElementById("apps-inner");
+  if (!cv || !section) return;
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var FONT = '300 12px "M PLUS 1 Code", ui-monospace, Menlo, monospace', LH = 15;
+  var RAMP = " ..::-=+*", COLOR = "#7f9be0";
+  var cw = 8, cols = 0, rows = 0, W = 0, H = 0;
+  var mx = 0, my = 0, tx = 0, ty = 0, str = 0, tstr = 0, seen = false, last = 0, lastNow = 0;
+  var running = false, raf = 0;
+
+  function layout() {
+    var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.font = FONT; ctx.textBaseline = "middle"; ctx.fillStyle = COLOR;
+    cw = ctx.measureText("M").width || 8;
+    cols = Math.ceil(W / cw) + 1; rows = Math.ceil(H / LH) + 1;
+  }
+
+  function render(now) {
+    lastNow = now;
+    var T = now * 0.00031, R = Math.max(110, Math.min(W, H) * 0.14), inv = 1 / (2 * R * R), ca = -1;
+    ctx.clearRect(0, 0, W, H);
+    for (var y = 0; y < rows; y++) {
+      var py = y * LH + LH / 2;
+      for (var x = 0; x < cols; x++) {
+        var v = (Math.sin(x * .075 + T) + Math.sin(y * .15 - T * .7) + Math.sin((x * .5 + y) * .065 + T * .5) + 3) / 6;
+        var b = 0;
+        if (str > 0.01) { var dx = x * cw + cw / 2 - mx, dy = py - my; b = str * Math.exp(-(dx * dx + dy * dy) * inv); }
+        v = Math.min(1, v + b * .26);
+        var i = Math.min(8, Math.floor(v * v * 10));
+        if (!i) continue;
+        var a = Math.round((.21 + b * .14) * 20) / 20;
+        if (a !== ca) { ca = a; ctx.globalAlpha = a; }
+        ctx.fillText(RAMP.charAt(i), x * cw, py);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(now) {
+    if (!running) return;
+    if (now - last > 33) {
+      last = now;
+      mx += (tx - mx) * .18; my += (ty - my) * .18;
+      str += (tstr - str) * .08;
+      render(now);
+    }
+    raf = requestAnimationFrame(loop);
+  }
+  function start() { if (running || reduce) return; running = true; raf = requestAnimationFrame(loop); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
+  function move(e) {
+    var r = cv.getBoundingClientRect();
+    tx = e.clientX - r.left; ty = e.clientY - r.top; tstr = 1;
+    if (!seen) { mx = tx; my = ty; seen = true; }
+  }
+
+  layout();
+  if (reduce) { render(0); if (inner) inner.classList.add("in"); }
+  else {
+    section.addEventListener("pointermove", move);
+    section.addEventListener("pointerdown", move);
+    section.addEventListener("pointerleave", function () { tstr = 0; });
+  }
+  var rt;
+  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { layout(); render(lastNow); }, 120); });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { start(); if (inner) inner.classList.add("in"); }
+        else stop();
+      });
+    }, { threshold: 0.05 });
+    io.observe(section);
+  } else { start(); if (inner) inner.classList.add("in"); }
+  var ready = document.fonts && document.fonts.load ? document.fonts.load(FONT) : Promise.resolve();
+  Promise.race([ready, new Promise(function (r) { setTimeout(r, 700); })]).then(function () { layout(); render(lastNow); }, function () { layout(); render(lastNow); });
+})();
+</script>
+<script>
+/* Apps: the latest three entries from apps.json. */
+(function () {
+  var list = document.getElementById("app-list");
+  if (!list) return;
+  var OPEN = { jp: "開く", en: "Open" };
+  var items = null;
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function lang() { return window.__lang === "en" ? "en" : "jp"; }
+
+  function render() {
+    if (!items) return;
+    if (!items.length) {
+      list.innerHTML = '<p class="app-note">' + (lang() === "en" ? "Nothing here yet." : "まだ何もありません。") + "</p>";
+      return;
+    }
+    list.innerHTML = items.map(function (a) {
+      var desc = lang() === "en" ? (a.descriptionEn || a.description || "") : (a.description || "");
+      var ver = a.version ? '<span class="app-ver">v' + esc(a.version) + "</span>" : "";
+      return '<div class="app-row">' +
+        '<div class="app-text"><span class="app-name">' + esc(a.name) + "</span>" + ver +
+        '<p class="app-desc">' + esc(desc) + "</p></div>" +
+        '<a class="app-open" href="' + esc(a.url) + '">' + OPEN[lang()] + "</a></div>";
+    }).join("");
+  }
+
+  list.innerHTML = '<p class="app-note">読み込み中…</p>';
+  fetch("apps.json", { cache: "no-store" }).then(function (r) {
+    if (!r.ok) throw new Error("bad response");
+    return r.json();
+  }).then(function (data) {
+    items = (Array.isArray(data) ? data : []).slice().sort(function (a, b) {
+      return String(b.date || "").localeCompare(String(a.date || ""));
+    }).slice(0, 3);
+    render();
+  }).catch(function () {
+    list.innerHTML = '<p class="app-note">読み込めませんでした。</p>';
+  });
+  window.addEventListener("langchange", render);
+})();
+</script>
+<script>
 /* Links background — the same ASCII and mouse glow as About,
  * masked so it falls away steeply but naturally toward the footer. */
 (function () {
@@ -1049,6 +1318,8 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
   var T = {
     jp: {
       linksSub: "相互リンク",
+      appsSub: "アプリ",
+      appOpen: "開く",
       linkDesc1: "中学生の趣味程度の自宅鯖",
       linkDesc2: "AIを使って色々開発などをしているKimSeekをつくった人です。",
       linkDesc3: "とにかくめっちゃすごい人。すごく尊敬してます",
@@ -1062,6 +1333,8 @@ window.addEventListener("scroll", function () { var s = document.querySelector("
     },
     en: {
       linksSub: "Mutual links",
+      appsSub: "Apps",
+      appOpen: "Open",
       linkDesc1: "A middle schooler's home server, run just as a hobby.",
       linkDesc2: "The creator of KimSeek, developing all sorts of things with AI.",
       linkDesc3: "Honestly, an amazing person. I respect him a lot.",

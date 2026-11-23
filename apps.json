@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Wasabi",
+    "version": "1.0.1",
+    "date": "2026-11-23",
+    "description": "DMG特化の展開・作成ツール。シンボリックリンクも壊さない。",
+    "descriptionEn": "An archiver specialised in DMG. Symbolic links stay intact.",
+    "url": "wasabi.html"
+  }
+]
